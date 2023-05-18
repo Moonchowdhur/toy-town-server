@@ -36,6 +36,7 @@ async function run() {
     app.get("/dolls", async (req, res) => {
       const cursor = dollsCollection.find();
       const result = await cursor.toArray();
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
