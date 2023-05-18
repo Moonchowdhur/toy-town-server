@@ -34,9 +34,16 @@ async function run() {
     });
 
     app.get("/dolls", async (req, res) => {
-      const cursor = dollsCollection.find();
+      const cursor = dollsCollection.find().limit(20);
       const result = await cursor.toArray();
       res.send(result);
+    });
+
+    app.get("/dolls/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+
+      // res.send(result);
     });
 
     // Send a ping to confirm a successful connection
