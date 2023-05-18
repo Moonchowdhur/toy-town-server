@@ -33,9 +33,45 @@ async function run() {
       res.send(result);
     });
 
+    app.delete("/dolls/:id", async (req, res) => {
+      const id = req.params.id;
+      // console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await dollsCollection.deleteOne(query);
+      res.send(result);
+    });
+
     app.get("/dolls", async (req, res) => {
-      const cursor = dollsCollection.find().limit(20);
+      let query = req.query;
+      console.log(query);
+
+      if (req.query?.email) {
+        query = { email: req.query.email };
+      }
+      const cursor = dollsCollection.find(query).limit(20);
       const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.put("/dolls/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedtoy = req.body;
+      // console.log(updatedtoy, id);
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          price: updatedtoy.price,
+          quantity: updatedtoy.quantity,
+          details: updatedtoy.details,
+        },
+      };
+      const result = await dollsCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+
       res.send(result);
     });
 
