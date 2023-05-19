@@ -22,7 +22,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const database = client.db("toymarketDB");
     const dollsCollection = database.collection("dolls");
@@ -57,15 +57,22 @@ async function run() {
         query = { subcategory: req.query.subcategory };
       }
 
-      const cursor = dollsCollection.find(query).limit(20);
+      const sort = req.query.sort == "Ascending";
+      console.log(sort);
+      const cursor = dollsCollection
+        .find(query)
+        .limit(20)
+        .sort({ price: sort ? 1 : -1 });
+      // const cursor = dollsCollection.find(query).limit(20);
       const result = await cursor.toArray();
+      console.log(result);
       res.send(result);
     });
 
     app.put("/dolls/:id", async (req, res) => {
       const id = req.params.id;
       const updatedtoy = req.body;
-      // console.log(updatedtoy, id);
+
       const filter = { _id: new ObjectId(id) };
       const options = { upsert: true };
       const updateDoc = {
