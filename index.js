@@ -48,6 +48,15 @@ async function run() {
       if (req.query?.email) {
         query = { email: req.query.email };
       }
+
+      if (req.query?.name) {
+        query = { name: req.query.name };
+      }
+
+      if (req.query?.subcategory) {
+        query = { subcategory: req.query.subcategory };
+      }
+
       const cursor = dollsCollection.find(query).limit(20);
       const result = await cursor.toArray();
       res.send(result);
