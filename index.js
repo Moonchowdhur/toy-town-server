@@ -33,6 +33,8 @@ async function run() {
       res.send(result);
     });
 
+    // delete
+
     app.delete("/dolls/:id", async (req, res) => {
       const id = req.params.id;
       // console.log(id);
