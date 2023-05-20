@@ -63,7 +63,7 @@ async function run() {
         .find(query)
         .limit(20)
         .sort({ price: sort ? 1 : -1 });
-      // const cursor = dollsCollection.find(query).limit(20);
+
       const result = await cursor.toArray();
       console.log(result);
       res.send(result);
